@@ -1402,6 +1402,9 @@ pins.spiFormat(8, 0)
 pins.spiFrequency(18000000)
 
 let LCD_RST = DigitalPin.P16;
+let LCD_BL  = AnalogPin.P19;
+let LCD_DC  = DigitalPin.P8;
+//let LCD_CS  = DigitalPin.??
 
 //% weight=20 color=#436EEE icon="\uf108"
 namespace LCD1IN8 {
@@ -1541,32 +1544,32 @@ namespace LCD1IN8 {
     //% Lev.min=0 Lev.max=1023
     //% weight=180
     export function LCD_SetBL(Lev: number): void {
-        pins.analogWritePin(AnalogPin.P1, 1023)
+        pins.analogWritePin(LCD_BL, 1023)
     }
 
     function LCD_WriteReg(reg: number): void {
-        pins.digitalWritePin(DigitalPin.P12, 0);
-        pins.digitalWritePin(DigitalPin.P16, 0);
+        pins.digitalWritePin(LCD_DC, 0);
+        //pins.digitalWritePin(DigitalPin.P16, 0);
         pins.spiWrite(reg);
-        pins.digitalWritePin(DigitalPin.P16, 1);
+        //pins.digitalWritePin(DigitalPin.P16, 1);
     }
 
     function LCD_WriteData_8Bit(Data: number): void {
-        pins.digitalWritePin(DigitalPin.P12, 1);
-        pins.digitalWritePin(DigitalPin.P16, 0);
+        pins.digitalWritePin(LCD_DC, 1);
+        //pins.digitalWritePin(DigitalPin.P16, 0);
         pins.spiWrite(Data);
-        pins.digitalWritePin(DigitalPin.P16, 1);
+        //pins.digitalWritePin(DigitalPin.P16, 1);
     }
 
     function LCD_WriteData_Buf(Buf: number, len: number): void {
-        pins.digitalWritePin(DigitalPin.P12, 1);
-        pins.digitalWritePin(DigitalPin.P16, 0);
+        pins.digitalWritePin(LCD_DC, 1);
+        //pins.digitalWritePin(DigitalPin.P16, 0);
         let i = 0;
         for (i = 0; i < len; i++) {
             pins.spiWrite((Buf >> 8));
             pins.spiWrite((Buf & 0XFF));
         }
-        pins.digitalWritePin(DigitalPin.P16, 1);
+        //pins.digitalWritePin(DigitalPin.P16, 1);
     }
 
     function LCD_SetWindows(Xstart: number, Ystart: number, Xend: number, Yend: number): void {
@@ -1640,12 +1643,12 @@ namespace LCD1IN8 {
             }
             pins.digitalWritePin(DigitalPin.P2, 1);
 
-            pins.digitalWritePin(DigitalPin.P12, 1);
-            pins.digitalWritePin(DigitalPin.P16, 0);
+            pins.digitalWritePin(LCD_DC, 1);
+            //pins.digitalWritePin(DigitalPin.P16, 0);
             for (let offset = 0; offset < 640; offset++) {
                 pins.spiWrite(rbuf[offset]);
             }
-            pins.digitalWritePin(DigitalPin.P16, 1);
+            //pins.digitalWritePin(DigitalPin.P16, 1);
         }
 
         //Turn on the LCD display
