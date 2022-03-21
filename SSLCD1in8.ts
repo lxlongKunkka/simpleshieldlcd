@@ -1549,6 +1549,7 @@ namespace LCD1IN8 {
         pins.analogWritePin(LCD_BL, 1023)
     }
 
+    //写寄存器
     function LCD_WriteReg(reg: number): void {
         pins.digitalWritePin(LCD_DC, 0);
         //pins.digitalWritePin(DigitalPin.P16, 0);
@@ -1556,6 +1557,7 @@ namespace LCD1IN8 {
         //pins.digitalWritePin(DigitalPin.P16, 1);
     }
 
+    //写8位数据
     function LCD_WriteData_8Bit(Data: number): void {
         pins.digitalWritePin(LCD_DC, 1);
         //pins.digitalWritePin(DigitalPin.P16, 0);
@@ -1563,6 +1565,7 @@ namespace LCD1IN8 {
         //pins.digitalWritePin(DigitalPin.P16, 1);
     }
 
+    //写len个16位数据
     function LCD_WriteData_Buf(Buf: number, len: number): void {
         pins.digitalWritePin(LCD_DC, 1);
         //pins.digitalWritePin(DigitalPin.P16, 0);
@@ -1574,6 +1577,7 @@ namespace LCD1IN8 {
         //pins.digitalWritePin(DigitalPin.P16, 1);
     }
 
+    //选中区域
     function LCD_SetWindows(Xstart: number, Ystart: number, Xend: number, Yend: number): void {
         //set the X coordinates
         LCD_WriteReg(0x2A);
@@ -1592,14 +1596,16 @@ namespace LCD1IN8 {
         LCD_WriteReg(0x2C);
     }
 
+    //全屏设置颜色
     function LCD_SetColor(Color: number, Xpoint: number, Ypoint: number,): void {
         LCD_WriteData_Buf(Color, Xpoint * Ypoint);
     }
 
+    //画点在x, y位置画颜色
     function LCD_SetPoint(Xpoint: number, Ypoint: number, Color: number): void {
-        let Addr = (Xpoint + Ypoint * 160) * 2;
-        SPIRAM_WR_Byte(Addr, Color >> 8);
-        SPIRAM_WR_Byte(Addr + 1, Color & 0xff);
+        LCD_SetWindows(Xpoint, Ypoint, Xpoint+1, Ypoint+1);
+        LCD_WriteData_8Bit(Color >> 8);
+        LCD_WriteData_8Bit(Color & 0xff);
     }
 
 
@@ -1624,7 +1630,7 @@ namespace LCD1IN8 {
     }
 */
 
-
+/*
     //% blockId=LCD_Display
     //% blockGap=8
     //% block="Show Full Screen"
@@ -1658,8 +1664,9 @@ namespace LCD1IN8 {
         }
 
         //Turn on the LCD display
-        LCD_WriteReg(0x29);
+        //LCD_WriteReg(0x29);
     }
+*/
 
     //% blockId=DrawPoint
     //% blockGap=8
@@ -1871,6 +1878,8 @@ namespace LCD1IN8 {
         }// Write all
     }
 
+/*
+
     //spi ram
     function SPIRAM_Set_Mode(mode: number): void {
         pins.digitalWritePin(DigitalPin.P2, 0);
@@ -1901,6 +1910,8 @@ namespace LCD1IN8 {
         pins.spiWrite(Data);
         pins.digitalWritePin(DigitalPin.P2, 1);
     }
+
+*/
 
     function Swop_AB(Point1: number, Point2: number): void {
         let Temp = 0;
