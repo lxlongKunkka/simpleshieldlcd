@@ -16,6 +16,7 @@ let FONT_FOREGROUND_COLOR = 0
 let LCD_WIDTH = 160  //LCD width
 let LCD_HEIGHT = 128 //LCD height
 
+/*
 // SRAM opcodes
 let SRAM_CMD_WREN = 0x06
 let SRAM_CMD_WRDI = 0x04
@@ -28,6 +29,7 @@ let SRAM_CMD_WRITE = 0x02
 let SRAM_BYTE_MODE = 0x00
 let SRAM_PAGE_MODE = 0x80
 let SRAM_STREAM_MODE = 0x40
+*/
 
 enum COLOR {
     WHITE = 0xFFFF,
@@ -1516,8 +1518,8 @@ namespace LCD1IN8 {
         LCD_WriteReg(0x11);
         control.waitMicros(1000);
 
-        //LCD_WriteReg(0x29);
-        SPIRAM_Set_Mode(SRAM_BYTE_MODE);
+        LCD_WriteReg(0x29);
+        //SPIRAM_Set_Mode(SRAM_BYTE_MODE);
     }
 
     //% blockId=LCD_Clear
@@ -1600,6 +1602,8 @@ namespace LCD1IN8 {
         SPIRAM_WR_Byte(Addr + 1, Color & 0xff);
     }
 
+
+/*
     //% blockId=Draw_Clear
     //% blockGap=8
     //% block="Clear Drawing cache"
@@ -1618,6 +1622,8 @@ namespace LCD1IN8 {
         }
         pins.digitalWritePin(DigitalPin.P2, 1);
     }
+*/
+
 
     //% blockId=LCD_Display
     //% blockGap=8
